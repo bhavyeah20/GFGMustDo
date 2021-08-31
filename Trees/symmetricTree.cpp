@@ -1,6 +1,5 @@
 class Solution{
     public:
-    // return true/false denoting whether the tree is Symmetric or not
     
     bool sym(Node *root1, Node *root2){
         
@@ -13,9 +12,7 @@ class Solution{
     }
     
     
-    bool isSymmetric(struct Node* root)
-    {
-	    // Code here
+    bool isSymmetric(struct Node* root){
 	    return sym(root, root);
     }
 };
