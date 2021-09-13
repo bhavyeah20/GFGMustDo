@@ -1,3 +1,4 @@
+//Greedy will work for this only not always
 class Solution{
 public:
     vector<int> minPartition(int N){
@@ -16,7 +17,7 @@ public:
 };
 
 //or
-
+//Will work always
 class Solution{
 public:
 
