@@ -1,10 +1,11 @@
-class Solution{
+class Solution
+{
     public:
-    //Function to find the length of longest common subsequence in two strings.
-    int lcs(int x, int y, string s1, string s2){
+    //Function to find length of shortest common supersequence of two strings.
+    int shortestCommonSupersequence(string s1, string s2, int x, int y)
+    {
         vector<vector<int>> dp(x+1,vector<int> (y+1,0));
 
-        // dp[i][j] -> LCS length using i and j chars of s1 and s2
 
         for(int i = 1; i <= x; i++){
             for(int j = 1; j <= y; j++){
@@ -15,6 +16,6 @@ class Solution{
             }
         }
 
-        return dp[x][y];
+        return x+y-dp[x][y];
     }
 };

@@ -1,33 +1,36 @@
 class Solution
 {
     public:
-    vector<vector<int>> dp;
-    int helper(int i, int n, vector<int> &arr){
+    
+    vector<int> cuts;
+    vector<int> dp;
+    
+    int helper(int n){
         if(n == 0)
             return 0;
             
-        if(i == -1)
-            return INT_MIN + 100;
+        if(n < 0)
+            return INT_MIN;
             
-        if(dp[i][n] != -1)
-            return dp[i][n];
-        if(arr[i] <= n)
-            return dp[i][n] = max(1 + helper(i,n-arr[i],arr), helper(i-1,n,arr));
-            
-        return dp[i][n] = helper(i-1,n,arr);
+        if(dp[n] != -1)
+            return dp[n];
+        
+        int res = INT_MIN;
+        
+        for(int i = 0; i < 3; i++){
+            if(n-cuts[i] >= 0)
+               res = max(res, 1 + helper(n-cuts[i]));
+        }
+        
+        return dp[n] = res;
     }
     
-    
     int maximizeTheCuts(int n, int x, int y, int z){
-        vector<int> arr(3);
-        arr[0] = min({x,y,z});
-        arr[2] = max({x,y,z});
-        arr[1] = x+y+z-arr[0]-arr[2];
-        
+        cuts.clear();
         dp.clear();
-        dp.resize(3, vector<int> (n+1,-1));
-        
-        return helper(2,n,arr) == INT_MIN + 100 ? 0 : helper(2,n,arr);
-        
+        cuts.resize(3);
+        dp.resize(n+1,-1);
+        cuts[0] = x, cuts[1] = y, cuts[2] = z;
+        return helper(n) < 0 ? 0 : helper(n);
     }
 };
