@@ -1,47 +1,51 @@
 class Solution{
     public:
     unordered_set<char> vis;
-    unordered_set<char> path;
     unordered_map<char, vector<char>> mp;
-    int biggestYet = 0;
-    
-    void cycle(char ch){
+    vector<int> in, out;
+
+
+    void dfs(char ch){
         vis.insert(ch);
-        path.insert(ch);
-        
         for(auto nbr: mp[ch]){
-            if(vis.count(nbr) && path.count(nbr)){
-                biggestYet = max(biggestYet, (int)path.size());
-            }
-            
-            else if(!vis.count(nbr)){
-                cycle(nbr);
+            if(!(vis.count(nbr))){
+                dfs(nbr);
             }
         }
-        path.erase(ch);
+    }
+    
+    bool isConnected(char ch){
+        dfs(ch);
+
+        for(int i = 0; i < 26;i++){
+            if(!(vis.count(i+'a')) && in[i] > 0)
+                return false;
+        }
+
+        return true;
+        
     }
     
     int isCircle(int N, vector<string> A){
         vis.clear();
         mp.clear();
-        biggestYet = 0;
-        
+        in.clear();
+        out.clear();
+
+        in.resize(26,0), out.resize(26,0);    
+
         for(auto str: A){
-            mp[str[0]].push_back(str[1]);
+            out[str[0]-'a']++;
+            in[str[str.size()-1]-'a']++;
+            mp[str[0]].push_back(str[str.size()-1]);
         }
-        
-        for(auto str: A){
-            path.clear();
-            if(!(vis.count(str[0]))){
-                cycle(str[0]);
-                if(biggestYet == A.size())
-                    return true;
-            }
+
+        for(int i = 0; i < 26; i++){
+            if(in[i] != out[i])
+                return false;
         }
-        cout<<biggestYet;
-        return false;
+
+        return isConnected(A[0][0]);
     }
+        
 };
-
-
-//l ength n cycle in undirected
